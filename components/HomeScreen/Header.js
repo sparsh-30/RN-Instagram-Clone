@@ -6,7 +6,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 
 export default function Header() {
   return (
-    <View className="flex-row justify-between items-center px-4">
+    <View className="flex-row justify-between items-center pr-4 pl-2 mt-3">
       <TouchableOpacity>
         <Image className="w-[150px] h-[50px]" source={require('./../../assets/header_logo.png')} />
       </TouchableOpacity>
