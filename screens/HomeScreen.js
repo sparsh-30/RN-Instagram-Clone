@@ -7,10 +7,10 @@ import Post from '../components/HomeScreen/Post'
 import {posts} from './../assets/PostsData'
 import BottomTabs from '../components/HomeScreen/BottomTabs'
 
-export default function HomeScreen() {
+export default function HomeScreen({navigation}) {
   return (
     <SafeAreaView className="flex-1 bg-black">
-        <Header />
+        <Header navigation={navigation} />
         <Stories />
         <ScrollView>
           {posts.map((post,index)=>{

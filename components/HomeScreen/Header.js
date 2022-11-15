@@ -1,10 +1,13 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native'
 import React from 'react'
+// import { useNavigation } from '@react-navigation/native';
 import { Octicons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons'; 
+import { FontAwesome5 } from '@expo/vector-icons';
 
-export default function Header() {
+
+export default function Header({navigation}) {
+  // const navigation=useNavigation();
   return (
     <View className="flex-row justify-between items-center pr-4 pl-2 mt-3">
       <TouchableOpacity>
@@ -12,7 +15,7 @@ export default function Header() {
       </TouchableOpacity>
       <View className="flex-row">
         <TouchableOpacity className="ml-3">
-          <Octicons name="diff-added" size={30} color="white" />
+          <Octicons onPress={()=> navigation.navigate('NewPostScreen')} name="diff-added" size={30} color="white" />
         </TouchableOpacity>
 
         <TouchableOpacity className="ml-3">
