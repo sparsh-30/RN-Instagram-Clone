@@ -6,7 +6,7 @@ import * as Yup from 'yup'
 import validator from 'email-validator'
 import {auth,db} from './../../firebase'
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { getFirestore, collection, addDoc, getDocs } from "firebase/firestore";
+import { getFirestore, collection, addDoc, getDocs, setDoc, doc } from "firebase/firestore";
 
 export default function SignupForm() {
 
@@ -70,7 +70,6 @@ export default function SignupForm() {
                     className="border-2 mt-2 py-1 px-4 rounded-md text-base"
                     keyboardType='email-address'
                     autoCapitalize='none'
-                    autoFocus={true}
                     onChangeText={handleChange('username')}
                     onBlur={handleBlur('username')}
                     value={values.username}
@@ -95,7 +94,7 @@ export default function SignupForm() {
 
                 <View className="text-center mt-8 flex-row justify-center">
                     <Text className="text-base">Already have an account? </Text>
-                    <TouchableOpacity onPress={()=> navigation.push('LoginScreen')}>
+                    <TouchableOpacity onPress={()=> navigation.goBack()}>
                         <Text className="text-[#0d6efd] text-base">Log In</Text>
                     </TouchableOpacity>
                 </View>

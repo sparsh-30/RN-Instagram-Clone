@@ -6,9 +6,12 @@ import { Foundation } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { signOut } from 'firebase/auth';
+import {auth} from './../../firebase'
 
 export default function BottomTabs() {
     const navigation=useNavigation();
+
   return (
     <View>
         <Divider width={1} orientation='vertical' />
@@ -25,7 +28,7 @@ export default function BottomTabs() {
         <TouchableOpacity>
             <Feather name="shopping-bag" size={30} color="white" />
         </TouchableOpacity>
-        <TouchableOpacity onPress={()=> navigation.navigate('SignupScreen')}>
+        <TouchableOpacity onPress={()=> signOut(auth)}>
             <FontAwesome5 name="user-circle" size={30} color="white" />
         </TouchableOpacity>
         </View>

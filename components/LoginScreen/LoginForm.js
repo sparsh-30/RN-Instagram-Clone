@@ -18,7 +18,8 @@ export default function LoginForm() {
 
     const onLogin=async (email,password)=>{
         try{
-            signInWithEmailAndPassword(auth,email,password);
+            signInWithEmailAndPassword(auth,email,password)
+            .catch((error)=> alert("Enter the correct credentials."));
             console.log(email,password);
         }catch(error){
             alert(error);

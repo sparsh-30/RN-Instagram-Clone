@@ -23,18 +23,20 @@ export default function AddPostForm() {
           quality: 1,
         });
     
-        // console.log(result);
-    
         if (!result.canceled) {
           setImage(result.assets[0].uri);
         }
-      };
+    };
+
+    
     
     return (
     <ScrollView>
         <Formik
             initialValues={{caption:"",imageUrl:""}}
-            onSubmit={(values)=> {console.log(values);navigation.goBack()}}
+            onSubmit={(values)=> {
+                navigation.goBack();
+            }}
             validationSchema={uploadPostSchema}
             validateOnMount={true}
         >
