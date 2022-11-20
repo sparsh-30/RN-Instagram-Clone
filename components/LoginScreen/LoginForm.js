@@ -71,7 +71,7 @@ export default function LoginForm() {
 
                 <View className="text-center mt-8 flex-row justify-center">
                     <Text className="text-base">Don't have an account? </Text>
-                    <TouchableOpacity onPress={()=> navigation.goBack()}>
+                    <TouchableOpacity onPress={()=> navigation.navigate('SignupScreen')}>
                         <Text className="text-[#0d6efd] text-base">Sign Up</Text>
                     </TouchableOpacity>
                 </View>

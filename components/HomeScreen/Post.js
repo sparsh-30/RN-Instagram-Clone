@@ -22,7 +22,7 @@ const PostHeader=({post})=> {
     <View className="flex-row justify-between items-center px-2 my-2">
         <View className="flex-row items-center">
             <Image style={styles.story_border} className="w-[40] h-[40] rounded-full mr-2" source={{uri: post.profile_picture}} />
-            <Text className="text-white font-[700]">{post.user}</Text>
+            <Text className="text-white font-[700]">{post.username}</Text>
         </View>
         <TouchableOpacity>
             <Entypo name="dots-three-horizontal" size={20} color="white" />
@@ -57,10 +57,10 @@ const PostFooter=({post})=> (
             </TouchableOpacity>
         </View>
 
-        <Text className="text-white mt-[1]">{post.likes.toLocaleString('en')} likes</Text>
+        <Text className="text-white mt-[1]">{post.likes} likes</Text>
 
         <Text className="mt-1">
-            <Text className="text-white font-[900]">{post.user} </Text>
+            <Text className="text-white font-[900]">{post.username} </Text>
             <Text className="text-white"> {post.caption}</Text>
         </Text>
 
@@ -71,7 +71,7 @@ const PostFooter=({post})=> (
             <Text className="text-white"> {post.comments.length>0 && (post.comments.length===0 ? "" : post.comments[0].comment)}</Text>
         </Text> */}
         {post.comments.length>0 && (<Text className="">
-                <Text className="text-white font-[900]">{post.comments[0].user} </Text>
+                <Text className="text-white font-[900]">{post.comments[0].username} </Text>
                 <Text className="text-white"> {post.comments[0].comment}</Text>
         </Text>)}
 

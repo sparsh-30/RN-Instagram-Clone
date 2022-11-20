@@ -27,7 +27,13 @@ export default function SignupForm() {
     const onSignup=async (email,password,username)=> {
         try{
             const authUser=await createUserWithEmailAndPassword(auth,email,password);
-            const demo=await addDoc(collection(db,'users'),{
+            // const demo=await addDoc(collection(db,'users'),{
+            //     owner_id:authUser.user.uid,
+            //     username:username,
+            //     email:authUser.user.email,
+            //     profile_picture: await getRandomProfilePicture()
+            // })
+            const setData=await setDoc(doc(db,'users',authUser.user.email),{
                 owner_id:authUser.user.uid,
                 username:username,
                 email:authUser.user.email,
@@ -44,7 +50,7 @@ export default function SignupForm() {
             initialValues={{email:'',username:'',password:''}}
             onSubmit={(values)=> {
                 onSignup(values.email,values.password,values.username);
-                navigation.navigate('HomeScreen')
+                // navigation.navigate('HomeScreen')
             }}
             validationSchema={SignupFromSchema}
             validateOnMount={true}
@@ -94,7 +100,7 @@ export default function SignupForm() {
 
                 <View className="text-center mt-8 flex-row justify-center">
                     <Text className="text-base">Already have an account? </Text>
-                    <TouchableOpacity onPress={()=> navigation.goBack()}>
+                    <TouchableOpacity onPress={()=> navigation.navigate('LoginScreen')}>
                         <Text className="text-[#0d6efd] text-base">Log In</Text>
                     </TouchableOpacity>
                 </View>

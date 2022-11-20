@@ -1,10 +1,13 @@
 import { View, Text, Image, TextInput, ScrollView, Button } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Divider } from 'react-native-elements'
+import uuid from 'react-native-uuid'
 import * as Yup from 'yup'
 import { Formik } from 'formik'
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native';
+import {db,auth} from './../../firebase'
+import { collection, query, where, getDocs, doc, onSnapshot, addDoc, setDoc, serverTimestamp, limit } from "firebase/firestore";
 
 const uploadPostSchema=Yup.object().shape({
     caption: Yup.string().max(2200, "Caption limit cannot exceed 2200"),
@@ -14,6 +17,7 @@ const PLACEHOLDER_IMAGE="https://media.istockphoto.com/id/1147544807/vector/thum
 
 export default function AddPostForm() {
     const [image, setImage] = useState(PLACEHOLDER_IMAGE);
+    const [currentLoggedInUser, setCurrentLoggedInUser] = useState(null);
     const navigation=useNavigation();
 
     const pickImage = async () => {
@@ -28,6 +32,44 @@ export default function AddPostForm() {
         }
     };
 
+    const getUsername=()=>{
+        const user=auth.currentUser;
+        // console.log(user);
+        // console.log(user.uid);
+        const unsubscribe=query(collection(db,'users'),where('email','==',user.email));
+        // console.log(unsubscribe);
+        onSnapshot(unsubscribe,(snapshot)=>{
+            snapshot.forEach((doc) =>{
+                setCurrentLoggedInUser({
+                    username: doc.data().username,
+                    profilePicture: doc.data().profile_picture
+                })
+                // console.log(doc.data());
+            })
+        })
+    }
+
+    useEffect(()=>{
+        getUsername();
+        // console.log(currentLoggedInUser.username);
+    },[]);
+
+    const uploadPostToFirebase=(imageUrl,caption)=>{
+        // console.log(currentLoggedInUser);
+        const user=doc(db,'users',auth.currentUser.email,'posts',uuid.v4());
+        const unsubscribe=setDoc(user,{
+            imageUrl:image,
+            username:currentLoggedInUser.username,
+            profile_picture:currentLoggedInUser.profilePicture,
+            owner_uid:auth.currentUser.uid,
+            caption:caption,
+            createdAt:serverTimestamp(),
+            likes:0,
+            likes_by_users:[],
+            comments:[]
+        })
+        .catch((error)=> console.log(error));
+    }
     
     
     return (
@@ -35,6 +77,7 @@ export default function AddPostForm() {
         <Formik
             initialValues={{caption:"",imageUrl:""}}
             onSubmit={(values)=> {
+                uploadPostToFirebase(values.imageUrl,values.caption);
                 navigation.goBack();
             }}
             validationSchema={uploadPostSchema}

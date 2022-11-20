@@ -1,6 +1,6 @@
 import { View, Text, ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import React,{ useEffect } from 'react'
+import React,{ useEffect, useState } from 'react'
 import Header from '../components/HomeScreen/Header'
 import Stories from '../components/HomeScreen/Stories'
 import Post from '../components/HomeScreen/Post'
@@ -10,10 +10,11 @@ import {db} from './../firebase'
 import { collectionGroup, onSnapshot, doc } from 'firebase/firestore'
 
 export default function HomeScreen({navigation}) {
+  const [posts,setPosts]=useState([]);
 
   useEffect(()=>{
     onSnapshot(collectionGroup(db,"posts"),(snapshot)=> {
-      console.log(snapshot.docs.map(doc=> doc.data()))
+      setPosts(snapshot.docs.map(doc=> doc.data()));
     })
   },[])
 
