@@ -1,18 +1,34 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { Divider } from 'react-native-elements'
 import { Entypo } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
+import {auth,db} from './../../firebase'
+import { doc, updateDoc, arrayUnion, arrayRemove, setDoc } from "firebase/firestore";
 
 export default function Post({post}) {
+
+    const handleLike=() => {
+        const currentLikeStatus=!post.likes_by_users.includes(auth.currentUser.email);
+        const ref=doc(db,'users',post.email,'posts',post.id);
+        updateDoc(ref,{
+            likes_by_users:currentLikeStatus
+            ? arrayUnion(auth.currentUser.email)
+            : arrayRemove(auth.currentUser.email)
+            // likes: 10
+        }).catch((error)=> console.log(error))
+    }
+
   return (
     <View className="mb-2">
         <Divider width={1} orientation="vertical" />
         <PostHeader post={post} />
         <PostImage post={post} />
-        <PostFooter post={post} />
+        <PostFooter post={post} handleLike={handleLike} />
+        {/* <PostFooter post={post} /> */}
     </View>
   )
 }
@@ -38,12 +54,18 @@ const PostImage=({post})=> (
     </View>
 )
 
-const PostFooter=({post})=> (
+const PostFooter=({handleLike,post})=> (
     <View className="pt-2 pb-1 px-3">
         <View className="flex-row justify-between">
             <View className="flex-row">
-                <TouchableOpacity className="mr-4">
-                    <Feather name="heart" size={25} color="white" />
+                <TouchableOpacity onPress={handleLike} className="mr-4">
+                    {/* <Feather name="heart" size={25} color="white" />
+                    <AntDesign name="heart" size={25} color="red" /> */}
+                    {
+                        post.likes_by_users.includes(auth.currentUser.email)
+                        ? <AntDesign name="heart" size={25} color="red" />
+                        : <Feather name="heart" size={25} color="white" />
+                    }
                 </TouchableOpacity>
                 <TouchableOpacity className="mr-3">
                     <FontAwesome5 name="comment" size={25} color="white" />
@@ -57,7 +79,7 @@ const PostFooter=({post})=> (
             </TouchableOpacity>
         </View>
 
-        <Text className="text-white mt-[1]">{post.likes} likes</Text>
+        <Text className="text-white mt-[1]">{post.likes_by_users.length} likes</Text>
 
         <Text className="mt-1">
             <Text className="text-white font-[900]">{post.username} </Text>

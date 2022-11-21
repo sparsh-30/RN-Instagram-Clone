@@ -7,14 +7,14 @@ import Post from '../components/HomeScreen/Post'
 import {posts} from './../assets/PostsData'
 import BottomTabs from '../components/HomeScreen/BottomTabs'
 import {db} from './../firebase'
-import { collectionGroup, onSnapshot, doc } from 'firebase/firestore'
+import { collectionGroup, onSnapshot, doc, orderBy } from 'firebase/firestore'
 
 export default function HomeScreen({navigation}) {
   const [posts,setPosts]=useState([]);
 
   useEffect(()=>{
-    onSnapshot(collectionGroup(db,"posts"),(snapshot)=> {
-      setPosts(snapshot.docs.map(doc=> doc.data()));
+    onSnapshot(collectionGroup(db,"posts",orderBy("createdAt","desc")),(snapshot)=> {
+      setPosts(snapshot.docs.map(post=> ({id:post.id,...post.data()})));
     })
   },[])
 

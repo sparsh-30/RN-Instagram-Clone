@@ -58,6 +58,7 @@ export default function AddPostForm() {
         // console.log(currentLoggedInUser);
         const user=doc(db,'users',auth.currentUser.email,'posts',uuid.v4());
         const unsubscribe=setDoc(user,{
+            email: auth.currentUser.email,
             imageUrl:image,
             username:currentLoggedInUser.username,
             profile_picture:currentLoggedInUser.profilePicture,
