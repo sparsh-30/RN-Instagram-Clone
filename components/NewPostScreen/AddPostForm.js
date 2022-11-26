@@ -6,8 +6,9 @@ import * as Yup from 'yup'
 import { Formik } from 'formik'
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native';
-import {db,auth} from './../../firebase'
+import {db,auth,storage} from './../../firebase'
 import { collection, query, where, getDocs, doc, onSnapshot, addDoc, setDoc, serverTimestamp, limit } from "firebase/firestore";
+import { ref, uploadBytes } from "firebase/storage";
 
 const uploadPostSchema=Yup.object().shape({
     caption: Yup.string().max(2200, "Caption limit cannot exceed 2200"),
@@ -17,8 +18,38 @@ const PLACEHOLDER_IMAGE="https://media.istockphoto.com/id/1147544807/vector/thum
 
 export default function AddPostForm() {
     const [image, setImage] = useState(PLACEHOLDER_IMAGE);
+    const [uploading,setUploading]=useState(null);
     const [currentLoggedInUser, setCurrentLoggedInUser] = useState(null);
     const navigation=useNavigation();
+
+    const uploadImage=async ()=>{
+        // setUploading(true);
+        // const response=await fetch(image.uri);
+        // const blob=await response.blob();
+        // const filename=image.uri.substring(image.uri.lastIndexOf('/')+1);
+        // uploadBytes(ref(storage,filename),blob);
+        // setUploading(null);
+
+
+        // fetch(image.uri)
+        // .then((img)=>{
+        //     const blob=img.blog();
+        //     const filename=image.uri.substring(image.uri.lastIndexOf('/')+1);
+        //     uploadBytes(ref(storage,filename),blob)
+        //     .then(()=> console.log("Upload Bytes"))
+        //     .catch((err)=> console.log(err));
+        // })
+        // .catch((err)=> console.log(err));
+        // console.log(image.uri);
+
+        // fetch(image.uri)
+        // .then((img)=> {
+        //     console.log(image);
+        //     console.log(img);
+        // })
+        // .catch((error)=> console.log(error));
+
+    }
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -26,11 +57,14 @@ export default function AddPostForm() {
           allowsEditing: true,
           quality: 1,
         });
-    
+        console.log(result);
         if (!result.canceled) {
           setImage(result.assets[0].uri);
         }
+        // uploadImage();
     };
+
+    
 
     const getUsername=()=>{
         const user=auth.currentUser;
