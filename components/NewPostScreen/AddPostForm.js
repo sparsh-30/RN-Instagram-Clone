@@ -8,7 +8,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native';
 import {db,auth,storage} from './../../firebase'
 import { collection, query, where, getDocs, doc, onSnapshot, addDoc, setDoc, serverTimestamp, limit } from "firebase/firestore";
-import { ref, uploadBytes } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const uploadPostSchema=Yup.object().shape({
     caption: Yup.string().max(2200, "Caption limit cannot exceed 2200"),
@@ -52,16 +52,24 @@ export default function AddPostForm() {
     }
 
     const pickImage = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.All,
-          allowsEditing: true,
-          quality: 1,
+        const name=uuid.v4();
+        ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            quality: 1
+        }).then((res)=> {
+            fetch(res.assets[0].uri)
+            .then((img)=> {
+                img.blob().then((demo)=> {
+                uploadBytes(ref(storage,name),demo,{contentType: 'image/jpeg'}).then(()=> {
+                    // console.log("Image Uploaded");
+                    getDownloadURL(ref(storage,name))
+                    .then((url)=> setImage(url));
+                })
+                .catch((error)=> console.log(error));
+            })
+        })
         });
-        console.log(result);
-        if (!result.canceled) {
-          setImage(result.assets[0].uri);
-        }
-        // uploadImage();
     };
 
     
