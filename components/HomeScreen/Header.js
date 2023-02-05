@@ -24,7 +24,7 @@ export default function Header({navigation}) {
 
         <TouchableOpacity className="ml-3">
           <View className="absolute bg-[#ff3250] w-[25] h-[20] justify-center items-center left-[20] bottom-[18] rounded-3xl z-50">
-            <Text className=" text-white text-bold text-center font-[900]">2</Text>
+            <Text className=" text-white text-bold text-center font-[900]">{Math.floor(Math.random()*10)}</Text>
           </View>
           <FontAwesome5 name="facebook-messenger" size={30} color="white" />
         </TouchableOpacity>

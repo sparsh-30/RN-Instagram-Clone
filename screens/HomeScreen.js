@@ -1,6 +1,7 @@
 import { View, Text, ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import React,{ useEffect, useState } from 'react'
+import { StatusBar } from 'expo-status-bar'
 import Header from '../components/HomeScreen/Header'
 import Stories from '../components/HomeScreen/Stories'
 import Post from '../components/HomeScreen/Post'
@@ -19,6 +20,8 @@ export default function HomeScreen({navigation}) {
   },[])
 
   return (
+    <>
+    <StatusBar style='dark' />
     <SafeAreaView className="flex-1 bg-black">
         <Header navigation={navigation} />
         <Stories />
@@ -29,5 +32,6 @@ export default function HomeScreen({navigation}) {
         </ScrollView>
         <BottomTabs />
     </SafeAreaView>
+    </>
   )
 }

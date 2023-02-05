@@ -6,6 +6,7 @@ import { Feather } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import {auth,db} from './../../firebase'
 import { doc, updateDoc, arrayUnion, arrayRemove, setDoc } from "firebase/firestore";
 
@@ -21,13 +22,14 @@ export default function Post({post}) {
             // likes: 10
         }).catch((error)=> console.log(error))
     }
+    const navigation=useNavigation();
 
   return (
     <View className="mb-2">
         <Divider width={1} orientation="vertical" />
         <PostHeader post={post} />
         <PostImage post={post} />
-        <PostFooter post={post} handleLike={handleLike} />
+        <PostFooter navigation={navigation} post={post} handleLike={handleLike} />
         {/* <PostFooter post={post} /> */}
     </View>
   )
@@ -54,7 +56,7 @@ const PostImage=({post})=> (
     </View>
 )
 
-const PostFooter=({handleLike,post})=> (
+const PostFooter=({handleLike,post,navigation})=> (
     <View className="pt-2 pb-1 px-3">
         <View className="flex-row justify-between">
             <View className="flex-row">
@@ -67,7 +69,7 @@ const PostFooter=({handleLike,post})=> (
                         : <Feather name="heart" size={25} color="white" />
                     }
                 </TouchableOpacity>
-                <TouchableOpacity className="mr-3">
+                <TouchableOpacity onPress={()=> navigation.push('CommentsScreen')} className="mr-3">
                     <FontAwesome5 name="comment" size={25} color="white" />
                 </TouchableOpacity>
                 <TouchableOpacity className="mr-3">

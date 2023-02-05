@@ -4,6 +4,7 @@ import HomeScreen from './screens/HomeScreen'
 import NewPostScreen from './screens/NewPostScreen'
 import LoginScreen from './screens/LoginScreen'
 import SignupScreen from './screens/SignupScreen'
+import CommentsScreen from './screens/CommentsScreen';
 
 const Stack=createStackNavigator();
 
@@ -12,6 +13,7 @@ export function SignedInStack() {
     <Stack.Navigator initialRouteName='HomeScreen' screenOptions={{headerShown:false,animationEnabled:true,gestureEnabled:true,gestureDirection:'horizontal'}}>
         <Stack.Screen name='HomeScreen' component={HomeScreen} />
         <Stack.Screen name='NewPostScreen' component={NewPostScreen} />
+        <Stack.Screen name='CommentsScreen' component={CommentsScreen} />
     </Stack.Navigator>
   )
 }
